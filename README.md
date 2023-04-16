@@ -10,7 +10,9 @@
 `curl localhost:8787/plusone/99`
  
 ## NodeJS Microservice - Kubernetes Deployment -
-`kubectl create deploy node-app --image siddharth67/node-service:v1`
+`kubectl create deploy node-app --image siddharth67/node-service:v1 --dry-run=client -o yaml > node-service:v1.yaml`
+
+`kubectl apply -f node-service:v1.yaml`
 
 `kubectl expose deploy node-app --name node-service --port 5000 --type ClusterIP`
 
