@@ -38,6 +38,11 @@ pipeline {
           withSonarQubeEnv(installationName: 'sonarqube'){
           sh "mvn clean verify sonar:sonar -Dsonar.projectKey=devopsddddddddsadasdasdadasdadad -Dsonar.projectName='devops'"
           }
+          timeout(time:2, unit:MINUTES){
+            script{
+              waitForQualityGate abortPipeline: true
+            }
+          }
         }
     
       }
