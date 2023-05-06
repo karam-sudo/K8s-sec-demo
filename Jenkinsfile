@@ -25,7 +25,7 @@ pipeline {
       
         steps {
           withSonarQubeEnv(installationName: 'sonarqube'){
-          sh "mvn clean verify sonar:sonar -Dsonar.projectKey=devopsddddddddsadasdasdadasdadad -Dsonar.projectName='devops'"
+          sh "mvn clean verify sonar:sonar -Dsonar.projectKey=devsecops -Dsonar.projectName='devops'"
           }
           // timeout(time:2, unit:MINUTES){
           //   script{
