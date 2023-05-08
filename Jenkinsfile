@@ -68,7 +68,7 @@ pipeline {
 
       stage('Docker Build and Push') {
         steps {
-          withDockerRegistry([credentialsId: "dockerhub", variable: "TOKEN"]) {
+          withCredentials([string(credentialsId: "dockerhub", variable: "TOKEN")]) {
             sh 'printenv'
             sh 'sudo docker login -u kalhalabi -p $TOKEN'
             sh 'sudo docker build -t kalhalabi/numeric-app:""$GIT_COMMIT"" .'
