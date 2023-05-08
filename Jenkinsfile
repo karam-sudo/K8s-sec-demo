@@ -83,30 +83,30 @@ pipeline {
             }
       }
 
-      // stage('Kubernetes Deployment - DEV') {
-      //   steps {
-      //     withKubeConfig([credentialsId: 'minikube-configfile']) {
-      //       sh "sed -i 's#replace#kalhalabi/numeric-app:$GIT_COMMIT#g' k8s_deployment_service.yaml"
-      //       sh "kubectl apply -f k8s_deployment_service.yaml"
-      //     }
-      //   }
-      // }
-      stage('K8S Deployment - DEV') {
-      steps {
-        parallel(
-          "Deployment": {
-            withKubeConfig([credentialsId: 'minikube-configfile']) {
-              sh "bash k8s-deployment.sh"
-            }
-          },
-          "Rollout Status": {
-            withKubeConfig([credentialsId: 'minikube-configfile']) {
-              sh "bash k8s-deployment-rollout-status.sh"
-            }
+      stage('Kubernetes Deployment - DEV') {
+        steps {
+          withKubeConfig([credentialsId: 'minikube-configfile']) {
+            sh "sed -i 's#replace#kalhalabi/numeric-app:$GIT_COMMIT#g' k8s_deployment_service.yaml"
+            sh "kubectl apply -f k8s_deployment_service.yaml"
           }
-        )
+        }
       }
-    }
+    //   stage('K8S Deployment - DEV') {
+    //   steps {
+    //     parallel(
+    //       "Deployment": {
+    //         withKubeConfig([credentialsId: 'minikube-configfile']) {
+    //           sh "bash k8s-deployment.sh"
+    //         }
+    //       },
+    //       "Rollout Status": {
+    //         withKubeConfig([credentialsId: 'minikube-configfile']) {
+    //           sh "bash k8s-deployment-rollout-status.sh"
+    //         }
+    //       }
+    //     )
+    //   }
+    // }
 
 }
   post{
