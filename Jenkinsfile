@@ -70,7 +70,7 @@ pipeline {
 
       stage('Docker Build and Push') {
         steps {
-          withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
+          withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
             sh 'printenv'
             sh 'sudo docker build -t kalhalabi/numeric-app:""$GIT_COMMIT"" .'
             sh 'sudo docker push kalhalabi/numeric-app:""$GIT_COMMIT""'
@@ -84,14 +84,31 @@ pipeline {
             }
       }
 
-      stage('Kubernetes Deployment - DEV') {
-        steps {
-          withKubeConfig([credentialsId: 'minikube-configfile']) {
-            sh "sed -i 's#replace#kalhalabi/numeric-app:$GIT_COMMIT#g' k8s_deployment_service.yaml"
-            sh "kubectl apply -f k8s_deployment_service.yaml"
+      // stage('Kubernetes Deployment - DEV') {
+      //   steps {
+      //     withKubeConfig([credentialsId: 'minikube-configfile']) {
+      //       sh "sed -i 's#replace#kalhalabi/numeric-app:$GIT_COMMIT#g' k8s_deployment_service.yaml"
+      //       sh "kubectl apply -f k8s_deployment_service.yaml"
+      //     }
+      //   }
+      // }
+      stage('K8S Deployment - DEV') {
+      steps {
+        parallel(
+          "Deployment": {
+            withKubeConfig([credentialsId: 'minikube-configfile']) {
+              sh "bash k8s-deployment.sh"
+            }
+          },
+          "Rollout Status": {
+            withKubeConfig([credentialsId: 'minikube-configfile']) {
+              sh "bash k8s-deployment-rollout-status.sh"
+            }
           }
-        }
+        )
       }
+    }
+
 }
   post{
         always{
