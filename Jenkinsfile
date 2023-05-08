@@ -59,7 +59,7 @@ pipeline {
         //   sh "bash trivy-docker-image-scan.sh"
         // },
         "OPA Conftest":{
-             sh ' docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-docker-security.rego Dockerfile'
+             sh ' sudo docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-docker-security.rego Dockerfile'
           }   	
         )
         }
@@ -70,8 +70,8 @@ pipeline {
         steps {
           withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
             sh 'printenv'
-            sh 'docker build -t kalhalabi/numeric-app:""$GIT_COMMIT"" .'
-            sh 'docker push kalhalabi/numeric-app:""$GIT_COMMIT""'
+            sh 'sudo docker build -t kalhalabi/numeric-app:""$GIT_COMMIT"" .'
+            sh 'sudo docker push kalhalabi/numeric-app:""$GIT_COMMIT""'
           }
         }
       }
