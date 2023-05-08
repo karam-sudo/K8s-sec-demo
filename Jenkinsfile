@@ -70,7 +70,7 @@ pipeline {
         steps {
           withDockerRegistry([credentialsId: "dockerhub", variable: "TOKEN"]) {
             sh 'printenv'
-            sh 'docker login -u kalhalabi -p $TOKEN'
+            sh 'sudo docker login -u kalhalabi -p $TOKEN'
             sh 'sudo docker build -t kalhalabi/numeric-app:""$GIT_COMMIT"" .'
             sh 'sudo docker push kalhalabi/numeric-app:""$GIT_COMMIT""'
           }
