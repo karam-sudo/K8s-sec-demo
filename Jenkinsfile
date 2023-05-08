@@ -79,7 +79,7 @@ pipeline {
 
       stage('Vulnerability Scan - Kubernetes') {
             steps {
-            sh 'sudo docker run --rm -v $(pwd):/projects/CICD/K8s-sec-demo openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
+            sh 'sudo docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
             }
       }
 
