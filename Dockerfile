@@ -1,5 +1,5 @@
 FROM  openjdk:21-slim-buster
-EXPOSE 8080
+EXPOSE 7070
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} /home/devops/app.jar
 USER devops

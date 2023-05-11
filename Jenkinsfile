@@ -117,7 +117,7 @@ pipeline {
           },
           "Rollout Status": {
             withKubeConfig([credentialsId: 'minikube-configfile']) {
-              sh "bash k8s-deployment-rollout-status.sh"
+              sh "kubectl -n default rollout undo deployment ${deploymentName}"
             }
           }
         )
