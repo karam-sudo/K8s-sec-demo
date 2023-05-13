@@ -91,9 +91,9 @@ pipeline {
             "Kubesec Scan": {
               sh "bash kubesec-scan.sh"
             }
-            // "Trivy Scan": {
-            //   sh "bash trivy-k8s-scan.sh"
-            // }
+            "Trivy Scan": {
+              sh "bash trivy-k8s-scan.sh"
+            }
           )
         }
       }
@@ -129,7 +129,7 @@ pipeline {
         always{
           junit 'target/surefire-reports/*.xml'
           jacoco execPattern: 'target/jacoco.exec'
-          pitmutation mutationStatsFile: 'target/pit-reports/mutations.xml'
+          // pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
           dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
         }
       }
