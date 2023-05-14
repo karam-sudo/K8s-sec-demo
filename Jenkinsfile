@@ -5,7 +5,7 @@ pipeline {
     containerName = "devsecops-container"
     serviceName = "devsecops-svc"
     imageName = "kalhalabi/numeric-app:${GIT_COMMIT}"
-    applicationURL="http://localhost:8090"
+    applicationURL="http://localhost"
     applicationURI="/increment/99"
     }
   stages {
@@ -121,6 +121,22 @@ pipeline {
             }
           }
         )
+      }
+    }
+    stage('Integration Tests - DEV') {
+      steps {
+        script {
+          try {
+            withKubeConfig([credentialsId: 'minikube-configfile']) {
+              sh "bash integration-test.sh"
+            }
+          } catch (e) {
+            withKubeConfig([credentialsId: 'minikube-configfile']) {
+              sh "kubectl -n default rollout undo deploy ${deploymentName}"
+            }
+            throw e
+          }
+        }
       }
     }
 
