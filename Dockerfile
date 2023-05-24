@@ -1,9 +1,10 @@
 FROM  openjdk:21-slim-buster
 EXPOSE 8090
 ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} /home/devops/app.jar
-USER devops
-ENTRYPOINT ["java","-jar","/home/devops/app.jar"]
+RUN addgroup  pipeline && adduser  k8s-pipeline -G pipeline
+COPY ${JAR_FILE} /home/k8s-pipeline/app.jar
+USER k8s-pipeline
+ENTRYPOINT ["java","-jar","/home/k8s-pipeline/app.jar"]
 
 
     
