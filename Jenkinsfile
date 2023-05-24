@@ -28,7 +28,7 @@ pipeline {
       }
       
    
-      stage('SonarQube Analysis') {
+      stage('SonarQube Analysis - SAST') {
       
         steps {
           withSonarQubeEnv(installationName: 'sonarqube'){
@@ -117,7 +117,7 @@ pipeline {
           },
           "Rollout Status": {
             withKubeConfig([credentialsId: 'minikube-configfile']) {
-              sh "kubectl -n default rollout undo deploy ${deploymentName}"
+              sh "bash k8s-deployment-rollout-status.sh"
             }
           }
         )
@@ -139,6 +139,14 @@ pipeline {
         }
       }
     }
+
+    // stage('OWASP ZAP - DAST') {
+    //   steps {
+    //     withKubeConfig([credentialsId: 'kubeconfig']) {
+    //       sh 'bash zap.sh'
+    //     }
+    //   }
+    // }
 
 }
   post{
