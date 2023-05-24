@@ -6,7 +6,7 @@ pipeline {
     serviceName = "devsecops-svc"
     imageName = "kalhalabi/numeric-app:${GIT_COMMIT}"
     applicationURL="http://localhost.com"
-    applicationURI="sincrement/99"
+    applicationURI="/increment/99"
     }
   stages {
       stage('Build Artifact') {
