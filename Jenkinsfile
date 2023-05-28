@@ -114,12 +114,12 @@ pipeline {
             withKubeConfig([credentialsId: 'minikube-configfile']) {
               sh "bash k8s-deployment.sh"
             }
-          },
-          "Rollout Status": {
-            withKubeConfig([credentialsId: 'minikube-configfile']) {
-              sh "bash k8s-deployment-rollout-status.sh"
-            }
           }
+          // "Rollout Status": {
+          //   withKubeConfig([credentialsId: 'minikube-configfile']) {
+          //     sh "bash k8s-deployment-rollout-status.sh"
+          //   }
+          // }
         )
       }
     }
