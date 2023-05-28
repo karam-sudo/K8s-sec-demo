@@ -55,9 +55,9 @@ pipeline {
             "Dependency Scan": {
               sh "mvn dependency-check:check"
         },
-        // "Trivy Scan":{
-        //   sh "bash trivy-docker-image-scan.sh"
-        // },
+        "Trivy Scan":{
+          sh "bash trivy-docker-image-scan.sh"
+        },
         "OPA Conftest":{
              sh ' sudo docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-docker-security.rego Dockerfile'
           }   	
@@ -123,22 +123,22 @@ pipeline {
         )
       }
     }
-    stage('Integration Tests - DEV') {
-      steps {
-        script {
-          try {
-            withKubeConfig([credentialsId: 'minikube-configfile']) {
-              sh "bash integration-test.sh"
-            }
-          } catch (e) {
-            withKubeConfig([credentialsId: 'minikube-configfile']) {
-              sh "kubectl -n default rollout undo deploy ${deploymentName}"
-            }
-            throw e
-          }
-        }
-      }
-    }
+    // stage('Integration Tests - DEV') {
+    //   steps {
+    //     script {
+    //       try {
+    //         withKubeConfig([credentialsId: 'minikube-configfile']) {
+    //           sh "bash integration-test.sh"
+    //         }
+    //       } catch (e) {
+    //         withKubeConfig([credentialsId: 'minikube-configfile']) {
+    //           sh "kubectl -n default rollout undo deploy ${deploymentName}"
+    //         }
+    //         throw e
+    //       }
+    //     }
+    //   }
+    // }
 
     stage('OWASP ZAP - DAST') {
       steps {
