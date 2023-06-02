@@ -77,11 +77,11 @@ pipeline {
         }
       }
 
-      // stage('Vulnerability Scan - Kubernetes') {
-      //       steps {
-      //       sh 'sudo docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
-      //       }
-      // }
+      stage('Vulnerability Scan - Kubernetes') {
+            steps {
+            sh 'sudo docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
+            }
+      }
       stage('Vulnerability Scan - Kubernetes') {
         steps {
           parallel(
@@ -115,30 +115,30 @@ pipeline {
               sh "bash k8s-deployment.sh"
             }
           }
-          // "Rollout Status": {
-          //   withKubeConfig([credentialsId: 'minikube-configfile']) {
-          //     sh "bash k8s-deployment-rollout-status.sh"
-          //   }
-          // }
+          "Rollout Status": {
+            withKubeConfig([credentialsId: 'minikube-configfile']) {
+              sh "bash k8s-deployment-rollout-status.sh"
+            }
+          }
         )
       }
     }
-    // stage('Integration Tests - DEV') {
-    //   steps {
-    //     script {
-    //       try {
-    //         withKubeConfig([credentialsId: 'minikube-configfile']) {
-    //           sh "bash integration-test.sh"
-    //         }
-    //       } catch (e) {
-    //         withKubeConfig([credentialsId: 'minikube-configfile']) {
-    //           sh "kubectl -n default rollout undo deploy ${deploymentName}"
-    //         }
-    //         throw e
-    //       }
-    //     }
-    //   }
-    // }
+    stage('Integration Tests - DEV') {
+      steps {
+        script {
+          try {
+            withKubeConfig([credentialsId: 'minikube-configfile']) {
+              sh "bash integration-test.sh"
+            }
+          } catch (e) {
+            withKubeConfig([credentialsId: 'minikube-configfile']) {
+              sh "kubectl -n default rollout undo deploy ${deploymentName}"
+            }
+            throw e
+          }
+        }
+      }
+    }
 
     stage('OWASP ZAP - DAST') {
       steps {
@@ -175,6 +175,8 @@ pipeline {
           }
         }
       }
+
+      
 
 }
   post{
