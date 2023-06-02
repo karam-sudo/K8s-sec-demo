@@ -107,22 +107,25 @@ pipeline {
       //     }
       //   }
       // }
+
       stage('K8S Deployment - DEV') {
        steps {
+        script{
         parallel(
           "Deployment": {
             withKubeConfig([credentialsId: 'minikube-configfile']) {
               sh "bash k8s-deployment.sh"
             }
-          }
+          },
           "Rollout Status": {
             withKubeConfig([credentialsId: 'minikube-configfile']) {
               sh "bash k8s-deployment-rollout-status.sh"
             }
           }
         )
-      }
-    }
+       }
+     }
+  }
     stage('Integration Tests - DEV') {
       steps {
         script {
