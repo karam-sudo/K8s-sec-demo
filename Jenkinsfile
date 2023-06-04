@@ -8,7 +8,7 @@ pipeline {
     applicationURL="http://localhost"
     applicationURI="/increment/99"
     }
-  stages {
+stages {
       stage('Build Artifact') {
             steps {
               sh "mvn clean package -DskipTests=true"
@@ -84,7 +84,6 @@ pipeline {
       }
       stage('Vulnerability Scan - Kubernetes') {
         steps {
-          script{
           parallel(
             "OPA Scan": {
               sh 'sudo docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
@@ -95,8 +94,7 @@ pipeline {
             "Trivy Scan": {
               sh "bash trivy-k8s-scan.sh"
             }
-          )
-         }
+          ) 
         }
       }
 
@@ -112,7 +110,6 @@ pipeline {
 
       stage('K8S Deployment - DEV') {
        steps {
-        script{
         parallel(
           "Deployment": {
             withKubeConfig([credentialsId: 'minikube-configfile']) {
@@ -124,8 +121,7 @@ pipeline {
               sh "bash k8s-deployment-rollout-status.sh"
             }
           }
-        )
-       }
+        )          
      }
   }
     stage('Integration Tests - DEV') {
@@ -163,8 +159,6 @@ pipeline {
 
       stage('K8S CIS Benchmark') {
         steps {
-          script {
-
             parallel(
               "Master": {
                 sh "bash cis-master.sh"
@@ -176,8 +170,6 @@ pipeline {
                 sh "bash cis-kubelet.sh"
               }
             )
-
-          }
         }
       }
 
