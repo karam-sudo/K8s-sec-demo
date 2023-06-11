@@ -7,10 +7,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    // @Override
-    // protected void configure(HttpSecurity http) throws Exception {
-    //     http.csrf().disable();
-    //     // http.csrf().ignoringAntMatchers("/route/");
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
+        // http.csrf().ignoringAntMatchers("/route/");
 
-    // }
+    }
 }
