@@ -43,4 +43,4 @@ spec:
     targetPort: 8090
   selector:
     app: devsecops
-  type: LoadBalancer
+  type: NodePort
