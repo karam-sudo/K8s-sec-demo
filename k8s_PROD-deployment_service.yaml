@@ -20,7 +20,7 @@ spec:
       - name: vol
         emptyDir: {}
       containers:
-      - image: replace
+      - image: kalhalabi/numeric-app:6c6cae8dcd98e084d484429125fe5b092c0172c1
         name: devsecops-container
         volumeMounts:
           - mountPath: /tmp
@@ -49,9 +49,9 @@ metadata:
   name: devsecops-svc
 spec:
   ports:
-  - port: 8080
+  - port: 8090
     protocol: TCP
-    targetPort: 8080
+    targetPort: 8090
   selector:
     app: devsecops
-  type: ClusterIP
+  type: LoadBalancer
